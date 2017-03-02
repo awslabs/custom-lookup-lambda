@@ -19,12 +19,10 @@ Resources:
       appname: app1
 Outputs:
   AMIID:
-    Value:
-      Fn::GetAtt:
-        - CUSTOMLOOKUP
-        - amiid
+    Value: !GetAtt CUSTOMLOOKUP.amiid
   VPC:
-    Value:
-      Fn::GetAtt:
-        - CUSTOMLOOKUP
-        - Vpc
+    Value: !GetAtt CUSTOMLOOKUP.vpc
+  COSTCENTER:
+    Value: !GetAtt CUSTOMLOOKUP.costcenter
+  PrivateHostedZoneID:
+    Value: !GetAtt CUSTOMLOOKUP.privatehostedzoneid

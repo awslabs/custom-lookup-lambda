@@ -28,6 +28,7 @@ def initialize():
 
 def handler(event, context):
     print(event)
+    print(context)
     if event['RequestType'] == 'Create' or event['RequestType'] == 'Update':
         initialize()
         if os.getenv('method') != "query":
@@ -82,7 +83,7 @@ def respond_cloudformation(event, status, data=None):
     responseBody = {
         'Status': status,
         'Reason': 'See the details in CloudWatch Log Stream',
-        'PhysicalResourceId': 'CloudWatch log stream',
+        'PhysicalResourceId': 'Custom Lambda Function',
         'StackId': event['StackId'],
         'RequestId': event['RequestId'],
         'LogicalResourceId': event['LogicalResourceId'],
@@ -102,7 +103,7 @@ if __name__ == '__main__':
             'teamname-environment': 'team1-dev',
             'ServiceToken': 'lambdaarn',
             'appname': 'app1',
-            'lookup': 'Vpc'
+            'lookup': 'vpc'
         },
         'RequestType': 'Create',
         'ServiceToken': 'lambdaarn',

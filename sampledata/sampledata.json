@@ -3,11 +3,11 @@
         "teamname-environment": "team1-dev",
         "appname": "app1",
         "info": {
-            "ELBSubnet1": "subnet-123456",
-            "ELBSubnet2": "subnet-234567",
-            "AppSubnet1": "subnet-345678",
-            "AppSubnet2": "subnet-456789",
-            "Vpc": "vpc-123456",
+            "elbsubnet1": "subnet-123456",
+            "elbsubnet2": "subnet-234567",
+            "appsubnet1": "subnet-345678",
+            "appsubnet2": "subnet-456789",
+            "vpc": "vpc-123456",
             "appname":"app1",
             "costcenter":"123456",
             "teamname":"team1",
@@ -16,20 +16,20 @@
             "compliancetype":"pci",
             "amiid":"ami-123456",
             "region":"us-west-1",
-            "PublicHostedZoneID":"Z234asdf1234asdf",
-            "PrivateHostedZoneID":"Z345SDFGCVHD123",
-            "HostedZoneName":"demo.internal"
+            "publichostedzoneid":"Z234asdf1234asdf",
+            "privatehostedzoneid":"Z345SDFGCVHD123",
+            "hostedzonename":"demo.internal"
         }
     },
   {
         "teamname-environment": "team1-test",
         "appname": "app1",
         "info": {
-            "ELBSubnet1": "subnet-123456",
-            "ELBSubnet2": "subnet-234567",
-            "AppSubnet1": "subnet-345678",
-            "AppSubnet2": "subnet-456789",
-            "Vpc": "vpc-123456",
+            "elbsubnet1": "subnet-123456",
+            "elbsubnet2": "subnet-234567",
+            "appsubnet1": "subnet-345678",
+            "appsubnet2": "subnet-456789",
+            "vpc": "vpc-123456",
             "appname":"app1",
             "costcenter":"123456",
             "teamname":"team1",
@@ -38,20 +38,20 @@
             "compliancetype":"pci",
             "amiid":"ami-123456",
             "region":"us-west-1",
-            "PublicHostedZoneID":"Z234asdf1234asdf",
-            "PrivateHostedZoneID":"Z345SDFGCVHD123",
-            "HostedZoneName":"demo.internal"
+            "publichostedzoneid":"Z234asdf1234asdf",
+            "privatehostedzoneid":"Z345SDFGCVHD123",
+            "hostedzonename":"demo.internal"
         }
     },
   {
         "teamname-environment": "team1-prod",
         "appname": "app1",
         "info": {
-            "ELBSubnet1": "subnet-123456",
-            "ELBSubnet2": "subnet-234567",
-            "AppSubnet1": "subnet-345678",
-            "AppSubnet2": "subnet-456789",
-            "Vpc": "vpc-123456",
+            "elbsubnet1": "subnet-123456",
+            "elbsubnet2": "subnet-234567",
+            "appsubnet1": "subnet-345678",
+            "appsubnet2": "subnet-456789",
+            "vpc": "vpc-123456",
             "appname":"app1",
             "costcenter":"123456",
             "teamname":"team1",
@@ -60,20 +60,20 @@
             "compliancetype":"pci",
             "amiid":"ami-123456",
             "region":"us-west-1",
-            "PublicHostedZoneID":"Z234asdf1234asdf",
-            "PrivateHostedZoneID":"Z345SDFGCVHD123",
-            "HostedZoneName":"demo.internal"
+            "publichostedzoneid":"Z234asdf1234asdf",
+            "privatehostedzoneid":"Z345SDFGCVHD123",
+            "hostedzonename":"demo.internal"
         }
     },
   {
         "teamname-environment": "team1-perf",
         "appname": "app1",
         "info": {
-            "ELBSubnet1": "subnet-123456",
-            "ELBSubnet2": "subnet-234567",
-            "AppSubnet1": "subnet-345678",
-            "AppSubnet2": "subnet-456789",
-            "Vpc": "vpc-123456",
+            "elbsubnet1": "subnet-123456",
+            "elbsubnet2": "subnet-234567",
+            "appsubnet1": "subnet-345678",
+            "appsubnet2": "subnet-456789",
+            "vpc": "vpc-123456",
             "appname":"app1",
             "costcenter":"123456",
             "teamname":"team1",
@@ -82,9 +82,9 @@
             "compliancetype":"pci",
             "amiid":"ami-123456",
             "region":"us-west-1",
-            "PublicHostedZoneID":"Z234asdf1234asdf",
-            "PrivateHostedZoneID":"Z345SDFGCVHD123",
-            "HostedZoneName":"demo.internal"
+            "publichostedzoneid":"Z234asdf1234asdf",
+            "privatehostedzoneid":"Z345SDFGCVHD123",
+            "hostedzonename":"demo.internal"
         }
     }
 ]
