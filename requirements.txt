@@ -1,3 +1,2 @@
 boto3
-enum34
 requests

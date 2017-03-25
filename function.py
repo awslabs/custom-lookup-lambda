@@ -8,27 +8,29 @@
 
 from __future__ import print_function
 import os
-from models.connector_dynamodb import connector_dynamodb
-from models.constants import constants
 import json
 import boto3
 import decimal
 import ast
-from boto3.dynamodb.conditions import Key, Attr
+from boto3.dynamodb.conditions import Key
 import requests
 
-objdynamodbconnector = connector_dynamodb()
+dynamodb_client = boto3.client('dynamodb')
+tablename = 'custom-lookup'
+hashkey = 'teamname-environment'
+rangekey = 'appname'
 
 
 def initialize():
     if os.getenv('method') is None:
         os.environ["method"] = "query"
-    objdynamodbconnector.initialize()
+        print("Running the function in Query Mode")
+    if os.getenv('method') == 'insert':
+        print("Running the function in Insert Mode")
 
 
 def handler(event, context):
     print(event)
-    print(context)
     if event['RequestType'] == 'Create' or event['RequestType'] == 'Update':
         initialize()
         if os.getenv('method') != "query":
@@ -37,19 +39,20 @@ def handler(event, context):
                 insert_data(item)
         else:
             data = get_data(event['ResourceProperties'])
-            respond_cloudformation(event, constants.SUCCESSMESSAGE.value,data)
-        return get_data(event['ResourceProperties'])
+            respond_cloudformation(event, "SUCCESS", data)
+            return get_data(event['ResourceProperties'])
     else:
-        respond_cloudformation(event, constants.SUCCESSMESSAGE.value)
+        respond_cloudformation(event, "SUCCESS")
         return
 
 
 def insert_data(response):
-    objdynamodbconnector.get_dynamodb_client().put_item(
-        TableName=constants.TABLENAME.value,
+    createtable()
+    dynamodb_client.put_item(
+        TableName=tablename,
         Item={
-            'teamname-environment': {'S': response['teamname-environment']},
-            'appname': {'S': response['appname']},
+            hashkey: {'S': response[hashkey]},
+            rangekey: {'S': response[rangekey]},
             'info': {'S': str(response['info'])}
         }
     )
@@ -62,20 +65,17 @@ def load_data(file="sampledata/sampledata.json"):
 
 
 def get_data(event):
-    dynamodb = boto3.resource('dynamodb', region_name='us-west-2')
-    table = dynamodb.Table(constants.TABLENAME.value)
+    dynamodb = boto3.resource('dynamodb')
+    table = dynamodb.Table(tablename)
     response = table.query(
-        KeyConditionExpression=Key(constants.DYNAMODBTABLEATTRIBUTE1.value).eq(event['teamname-environment']) \
-                               & Key(constants.DYNAMODBTABLEATTRIBUTE2.value).eq(event['appname'])
+        KeyConditionExpression=Key(hashkey).eq(event[hashkey]) \
+                               & Key(rangekey).eq(event[rangekey])
     )
-
     for item in response['Items']:
         objkeypair = ast.literal_eval(item['info'])
         if 'lookup' in event:
-            print(objkeypair[event['lookup']])
             return objkeypair[event['lookup']]
         else:
-            print(objkeypair)
             return objkeypair
 
 
@@ -92,6 +92,26 @@ def respond_cloudformation(event, status, data=None):
 
     print('Response = ' + json.dumps(responseBody))
     requests.put(event['ResponseURL'], data=json.dumps(responseBody))
+
+
+def createtable():
+    try:
+        dynamodb_client.describe_table(TableName=tablename)
+    except Exception:
+        dynamodb_client.create_table(
+            TableName=tablename,
+            KeySchema=[
+                {'AttributeName': hashkey, 'KeyType': 'HASH'},
+                {'AttributeName': rangekey, 'KeyType': 'RANGE'}
+            ],
+            AttributeDefinitions=[
+                {'AttributeName': hashkey, 'AttributeType': 'S'},
+                {'AttributeName': rangekey, 'AttributeType': 'S'}
+            ],
+            ProvisionedThroughput={'ReadCapacityUnits': 5, 'WriteCapacityUnits': 5}
+        )
+
+        dynamodb_client.get_waiter('table_exists').wait(TableName=tablename)
 
 
 # This is the test harness
