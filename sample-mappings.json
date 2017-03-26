@@ -2,7 +2,7 @@
     {
         "teamname-environment": "team1-dev",
         "appname": "app1",
-        "info": {
+        "mappings": {
             "elbsubnet1": "subnet-123456",
             "elbsubnet2": "subnet-234567",
             "appsubnet1": "subnet-345678",
@@ -24,7 +24,7 @@
   {
         "teamname-environment": "team1-test",
         "appname": "app1",
-        "info": {
+        "mappings": {
             "elbsubnet1": "subnet-123456",
             "elbsubnet2": "subnet-234567",
             "appsubnet1": "subnet-345678",
@@ -46,7 +46,7 @@
   {
         "teamname-environment": "team1-prod",
         "appname": "app1",
-        "info": {
+        "mappings": {
             "elbsubnet1": "subnet-123456",
             "elbsubnet2": "subnet-234567",
             "appsubnet1": "subnet-345678",
@@ -68,7 +68,7 @@
   {
         "teamname-environment": "team1-perf",
         "appname": "app1",
-        "info": {
+        "mappings": {
             "elbsubnet1": "subnet-123456",
             "elbsubnet2": "subnet-234567",
             "appsubnet1": "subnet-345678",

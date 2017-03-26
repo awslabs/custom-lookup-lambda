@@ -6,15 +6,11 @@
 #  CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and
 #  limitations under the License.
 AWSTemplateFormatVersion: "2010-09-09"
-Parameters:
-  CustomLambdaArn:
-    Description: ARN of the Lambda function, which does the lookup
-    Type: String
 Resources:
   CUSTOMLOOKUP:
     Type: Custom::Lookup
     Properties:
-      ServiceToken: !Ref CustomLambdaArn
+      ServiceToken: !ImportValue custom-lookup-lambda
       teamname-environment: team1-dev
       appname: app1
 Outputs:

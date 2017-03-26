@@ -58,3 +58,9 @@ Resources:
       Roles:
         -
           !Ref CUSTOMLOOKUPLAMBDAROLE
+Outputs:
+  LambdaArn:
+    Description: ARN of the Lambda Function, which returns the mappings
+    Value: !GetAtt CUSTOMLOOKUP.Arn
+    Export:
+      Name: custom-lookup-lambda

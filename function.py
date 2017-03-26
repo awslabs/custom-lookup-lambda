@@ -53,7 +53,7 @@ def insert_data(response):
         Item={
             hashkey: {'S': response[hashkey]},
             rangekey: {'S': response[rangekey]},
-            'info': {'S': str(response['info'])}
+            'mappings': {'S': str(response['mappings'])}
         }
     )
 
@@ -72,7 +72,7 @@ def get_data(event):
                                & Key(rangekey).eq(event[rangekey])
     )
     for item in response['Items']:
-        objkeypair = ast.literal_eval(item['info'])
+        objkeypair = ast.literal_eval(item['mappings'])
         if 'lookup' in event:
             return objkeypair[event['lookup']]
         else:
