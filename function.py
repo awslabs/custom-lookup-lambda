@@ -58,7 +58,7 @@ def insert_data(response):
     )
 
 
-def load_data(file="sampledata/sampledata.json"):
+def load_data(file="sample-mappings.json"):
     with open(file) as configuration_file:
         mappings = json.load(configuration_file, parse_float=decimal.Decimal)
     return mappings
