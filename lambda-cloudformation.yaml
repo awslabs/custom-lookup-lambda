@@ -13,6 +13,7 @@ Resources:
   CUSTOMLOOKUP:
     Type: AWS::Serverless::Function
     Properties:
+      FunctionName: custom-lookup
       Handler: function.handler
       Runtime: python2.7
       Description: custom lookup function
@@ -23,6 +24,7 @@ Resources:
   CUSTOMLOOKUPLAMBDAROLE:
       Type: AWS::IAM::Role
       Properties:
+        RoleName: custom-lookup-lambda-role
         AssumeRolePolicyDocument:
           Version: 2012-10-17
           Statement:
@@ -37,7 +39,7 @@ Resources:
   CUSTOMLOOKUPLAMBDAPOLICY:
     Type: AWS::IAM::Policy
     Properties:
-      PolicyName: !Sub ${AWS::StackName}-Role
+      PolicyName: custom-lookup-lambda-policy
       PolicyDocument:
         Version: 2012-10-17
         Statement:

@@ -1,0 +1,92 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "Stmt1490315351000",
+            "Effect": "Allow",
+            "Action": [
+                "dynamodb:CreateTable",
+                "dynamodb:DeleteItem",
+                "dynamodb:DeleteTable",
+                "dynamodb:GetItem",
+                "dynamodb:PutItem",
+                "dynamodb:Query",
+                "dynamodb:DescribeTable"
+            ],
+            "Resource": [
+                "arn:aws:dynamodb:*:*:table/custom-lookup"
+            ]
+        },
+        {
+            "Sid": "Stmt1490315351001",
+            "Effect": "Allow",
+            "Action": [
+                "s3:PutObject",
+                "s3:GetObject"
+            ],
+            "Resource": [
+                "*"
+            ]
+        },
+        {
+            "Sid": "Stmt1490315351002",
+            "Effect": "Allow",
+            "Action": [
+                "iam:CreateRole",
+                "iam:CreatePolicy",
+                "iam:GetRole",
+                "iam:DeleteRole",
+                "iam:PutRolePolicy",
+                "iam:PassRole",
+                "iam:DeleteRolePolicy"
+            ],
+            "Resource": [
+                "arn:aws:iam::*:role/custom-lookup-lambda-role",
+                "arn:aws:iam::*:policy/custom-lookup-lambda-policy"
+            ]
+        },
+        {
+            "Sid": "Stmt1490315443000",
+            "Effect": "Allow",
+            "Action": [
+                "cloudformation:CreateStack",
+                "cloudformation:CreateChangeSet",
+                "cloudformation:DeleteStack",
+                "cloudformation:DescribeChangeSet",
+                "cloudformation:DescribeStackEvents",
+                "cloudformation:DescribeStackResource",
+                "cloudformation:DescribeStackResources",
+                "cloudformation:DescribeStacks",
+                "cloudformation:ExecuteChangeSet",
+                "cloudformation:ListStackResources",
+                "cloudformation:UpdateStack",
+                "cloudformation:ValidateTemplate"
+            ],
+            "Resource": [
+                "arn:aws:cloudformation:*:*:stack/sample-stack/*",
+                "arn:aws:cloudformation:*:*:stack/sample-stack",
+                "arn:aws:cloudformation:*:*:stack/custom-lookup-lambda/*",
+                "arn:aws:cloudformation:*:*:stack/custom-lookup-lambda",
+                "arn:aws:cloudformation:*:aws:transform/Serverless-2016-10-31"
+            ]
+        },
+        {
+            "Sid": "Stmt1490315956000",
+            "Effect": "Allow",
+            "Action": [
+                "lambda:AddPermission",
+                "lambda:CreateFunction",
+                "lambda:DeleteFunction",
+                "lambda:InvokeFunction",
+                "lambda:RemovePermission",
+                "lambda:UpdateFunctionCode",
+                "lambda:GetFunctionConfiguration",
+                "lambda:GetFunction",
+                "iam:PutRolePolicy"
+            ],
+            "Resource": [
+                "arn:aws:lambda:*:*:function:custom-lookup"
+            ]
+        }
+    ]
+}
