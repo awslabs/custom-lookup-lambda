@@ -4,7 +4,7 @@ described queries [Amazon DynamoDB](https://aws.amazon.com/dynamodb/) table with
 the inputs from [AWS CloudFormation](https://aws.amazon.com/cloudformation/)
 to lookup the mappings.
 
-For more details refer the blog [here](https://aws.amazon.com/blogs/devops/custom-lookup-aws-lambda/)
+For more details refer the blog [here](https://aws.amazon.com/blogs/devops/custom-lookup-using-aws-lambda-and-amazon-dynamodb/)
 
 ## Use virtualenv for Python execution
 
