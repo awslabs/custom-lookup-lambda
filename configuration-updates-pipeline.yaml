@@ -145,6 +145,62 @@ Resources:
       Tags:
         - Key: Name
           Value: !Ref AWS::StackName
+  CFDeployerRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub ${AWS::StackName}-cfdeployer-role-${AWS::Region}
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          -
+            Effect: Allow
+            Principal:
+              Service:
+                - cloudformation.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Path: /
+  CFDeployerPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: !Sub ${AWS::StackName}-cfdeployer-policy-${AWS::Region}
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          -
+            Effect: Allow
+            Action:
+              - lambda:AddPermission
+              - lambda:CreateFunction
+              - lambda:DeleteFunction
+              - lambda:InvokeFunction
+              - lambda:RemovePermission
+              - lambda:UpdateFunctionCode
+              - lambda:GetFunctionConfiguration
+              - lambda:GetFunction
+              - lambda:UpdateFunctionConfiguration
+              - iam:CreateRole
+              - iam:CreatePolicy
+              - iam:GetRole
+              - iam:DeleteRole
+              - iam:PutRolePolicy
+              - iam:PassRole
+              - iam:DeleteRolePolicy
+              - cloudformation:*
+            Resource: "*"
+          -
+            Effect: Allow
+            Action:
+              - s3:PutObject
+              - s3:GetBucketPolicy
+              - s3:GetObject
+              - s3:ListBucket
+            Resource:
+             - !Join ['',['arn:aws:s3:::',!Ref ArtifactBucket, '/*']]
+             - !Join ['',['arn:aws:s3:::',!Ref ArtifactBucket]]
+      Roles:
+        -
+          !Ref CFDeployerRole
   Pipeline:
     Type: AWS::CodePipeline::Pipeline
     DependsOn: PipeLineRole
@@ -162,7 +218,7 @@ Resources:
                 Provider: CodeCommit
               Configuration:
                 RepositoryName: !Ref CodeCommit
-                BranchName: master
+                BranchName: feature/codepipeline
               OutputArtifacts:
                 - Name: SCCheckoutArtifact
               RunOrder: 1
@@ -183,6 +239,24 @@ Resources:
               - Name: SCCheckoutArtifact
             OutputArtifacts:
               - Name: BuildOutput
+        - Name: Deploy
+          Actions:
+            - Name: deploy-lambda-function
+              ActionTypeId:
+                Category: Deploy
+                Owner: AWS
+                Version: 1
+                Provider: CloudFormation
+              Configuration:
+                ChangeSetName: Deploy
+                ActionMode: CREATE_UPDATE
+                StackName: !Sub custom-lookup-lambda
+                Capabilities: CAPABILITY_NAMED_IAM
+                TemplatePath: BuildOutput::templates/samtemplate.yaml
+                RoleArn: !GetAtt CFDeployerRole.Arn
+              InputArtifacts:
+                - Name: BuildOutput
+              RunOrder: 1
       ArtifactStore:
         Type: S3
         Location: !Ref ArtifactBucket
