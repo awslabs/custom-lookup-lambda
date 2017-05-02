@@ -53,6 +53,9 @@ Resources:
                   - iam:PassRole
                   - s3:ListAllMyBuckets
                   - s3:GetBucketLocation
+                  - lambda:InvokeFunction
+                  - lambda:ListFunctions
+                  - lambda:GetFunctionConfiguration
                 Resource:
                   - "*"
               -
@@ -257,6 +260,25 @@ Resources:
               InputArtifacts:
                 - Name: BuildOutput
               RunOrder: 1
+        -
+          Name: Invoke
+          Actions:
+          -
+            Name: call-function
+            ActionTypeId:
+              Category: Invoke
+              Owner: AWS
+              Version: 1
+              Provider: Lambda
+            Configuration:
+              FunctionName: pipeline-invoker
+              UserParameters: !Sub |
+                {
+                  "file_to_sync": "sample-mappings.json"
+                }
+            InputArtifacts:
+                - Name: SCCheckoutArtifact
+            RunOrder: 1
       ArtifactStore:
         Type: S3
         Location: !Ref ArtifactBucket
