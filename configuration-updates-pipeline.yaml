@@ -271,7 +271,7 @@ Resources:
               Version: 1
               Provider: Lambda
             Configuration:
-              FunctionName: pipeline-invoker
+              FunctionName: insert-lookup
               UserParameters: !Sub |
                 {
                   "file_to_sync": "sample-mappings.json"
