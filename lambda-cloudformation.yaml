@@ -23,7 +23,7 @@ Resources:
   CUSTOMLOOKUPLAMBDAROLE:
       Type: AWS::IAM::Role
       Properties:
-        RoleName: custom-lookup-lambda-role
+        RoleName: custom-lookup-lambda-role-${AWS::Region}
         AssumeRolePolicyDocument:
           Version: 2012-10-17
           Statement:
@@ -38,7 +38,7 @@ Resources:
   CUSTOMLOOKUPLAMBDAPOLICY:
     Type: AWS::IAM::Policy
     Properties:
-      PolicyName: custom-lookup-lambda-policy
+      PolicyName: custom-lookup-lambda-policy-${AWS::Region}
       PolicyDocument:
         Version: 2012-10-17
         Statement:
