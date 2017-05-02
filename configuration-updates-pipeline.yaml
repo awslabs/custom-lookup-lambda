@@ -252,7 +252,7 @@ Resources:
                 ActionMode: CREATE_UPDATE
                 StackName: !Sub custom-lookup-lambda
                 Capabilities: CAPABILITY_NAMED_IAM
-                TemplatePath: BuildOutput::templates/samtemplate.yaml
+                TemplatePath: BuildOutput::samtemplate.yaml
                 RoleArn: !GetAtt CFDeployerRole.Arn
               InputArtifacts:
                 - Name: BuildOutput

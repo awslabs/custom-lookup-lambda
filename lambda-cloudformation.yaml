@@ -7,17 +7,16 @@
 #  limitations under the License.
 
 AWSTemplateFormatVersion: '2010-09-09'
-Transform: AWS::Serverless-2016-10-31
 Description: custom lookup function
 Resources:
   CUSTOMLOOKUP:
-    Type: AWS::Serverless::Function
+    Type: AWS::Lambda::Function
     Properties:
       FunctionName: custom-lookup
       Handler: function.handler
       Runtime: python2.7
       Description: custom lookup function
-      CodeUri: ./
+      Code: ./
       MemorySize: 128
       Timeout: 60
       Role: !GetAtt CUSTOMLOOKUPLAMBDAROLE.Arn
