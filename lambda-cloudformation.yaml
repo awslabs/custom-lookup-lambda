@@ -7,24 +7,23 @@
 #  limitations under the License.
 
 AWSTemplateFormatVersion: '2010-09-09'
-Transform: AWS::Serverless-2016-10-31
 Description: custom lookup function
 Resources:
   CUSTOMLOOKUP:
-    Type: AWS::Serverless::Function
+    Type: AWS::Lambda::Function
     Properties:
       FunctionName: custom-lookup
       Handler: function.handler
       Runtime: python2.7
       Description: custom lookup function
-      CodeUri: ./
+      Code: ./
       MemorySize: 128
       Timeout: 60
       Role: !GetAtt CUSTOMLOOKUPLAMBDAROLE.Arn
   CUSTOMLOOKUPLAMBDAROLE:
       Type: AWS::IAM::Role
       Properties:
-        RoleName: custom-lookup-lambda-role
+        RoleName: !Sub custom-lookup-lambda-role-${AWS::Region}
         AssumeRolePolicyDocument:
           Version: 2012-10-17
           Statement:
@@ -39,7 +38,7 @@ Resources:
   CUSTOMLOOKUPLAMBDAPOLICY:
     Type: AWS::IAM::Policy
     Properties:
-      PolicyName: custom-lookup-lambda-policy
+      PolicyName: !Sub custom-lookup-lambda-policy-${AWS::Region}
       PolicyDocument:
         Version: 2012-10-17
         Statement:
@@ -60,6 +59,64 @@ Resources:
       Roles:
         -
           !Ref CUSTOMLOOKUPLAMBDAROLE
+  #Below is for Insert Lambda
+  INSERTLOOKUP:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: insert-lookup
+      Handler: dynamodb-sync.handler
+      Runtime: python2.7
+      Description: inserts records from codepipeline to dynamodb
+      Code: ./
+      MemorySize: 128
+      Timeout: 300
+      Role: !GetAtt INSERTLOOKUPLAMBDAROLE.Arn
+  INSERTLOOKUPLAMBDAROLE:
+      Type: AWS::IAM::Role
+      Properties:
+        RoleName: !Sub insert-lookup-lambda-role-${AWS::Region}
+        AssumeRolePolicyDocument:
+          Version: 2012-10-17
+          Statement:
+            -
+              Effect: Allow
+              Principal:
+                Service:
+                  - lambda.amazonaws.com
+              Action:
+                - sts:AssumeRole
+        Path: /
+  INSERTLOOKUPLAMBDAPOLICY:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: !Sub insert-lookup-lambda-policy-${AWS::Region}
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          -
+            Effect: Allow
+            Action:
+              - dynamodb:*
+            Resource:
+              - arn:aws:dynamodb:*:*:table/custom-lookup
+              - arn:aws:dynamodb:*:*:table/custom-lookup/*
+          -
+            Effect: Allow
+            Action:
+              - codepipeline:PutJobFailureResult
+              - codepipeline:PutJobSuccessResult
+            Resource:
+              - "*"
+          -
+            Effect: Allow
+            Action:
+              - logs:CreateLogGroup
+              - logs:CreateLogStream
+              - logs:PutLogEvents
+            Resource: arn:aws:logs:*:*:*
+      Roles:
+        -
+          !Ref INSERTLOOKUPLAMBDAROLE
 Outputs:
   LambdaArn:
     Description: ARN of the Lambda Function, which returns the mappings
